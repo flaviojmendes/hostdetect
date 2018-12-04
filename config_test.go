@@ -1,11 +1,13 @@
 package main
 
 import (
-	"github.com/andreyvit/diff"
-	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/andreyvit/diff"
+	"gopkg.in/yaml.v2"
 )
 
 var textConfig = `timeout: 1s
@@ -45,5 +47,30 @@ func TestConfigCanBeDeserialized(t *testing.T) {
 	yaml.Unmarshal([]byte(textConfig), &c)
 	if !reflect.DeepEqual(c, objConfig) {
 		t.Fatalf("got: %s expected: %s", c, objConfig)
+	}
+}
+
+func testIfItReadConfig(t *testing.T) {
+	content, err := ioutil.ReadFile("mock_file")
+
+	if err != nil {
+		t.Fatalf("error reading file: mock_file")
+	}
+
+	var result = readConfig(content)
+	var expected = 3
+
+	if len(result.Hosts) != expected {
+		t.Fatalf("got: %v expected: %v", len(result.Hosts), expected)
+	}
+}
+
+func testIfFileIsReadableOnceItExists(t *testing.T) {
+	var filepath = "mock_file"
+
+	result, err := readConfigFile(filepath)
+
+	if result == nil && err != nil {
+		t.Fatalf("error serializing config: %s", filepath)
 	}
 }

@@ -1,0 +1,9 @@
+timeout: 1s
+interval: 1m0s
+hosts:
+- network: tcp
+  address: www.google.com:80
+- network: tcp
+  address: www.google.com:23
+- network: tcp
+  address: zebeleo.com.br:80
