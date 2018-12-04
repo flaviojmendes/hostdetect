@@ -1,21 +1,19 @@
 language: go
-
 go:
-  - "1.11.x"
-
+- 1.11.x
 env:
   global:
-    - GOARCH=amd64
-    - GO_FOR_RELEASE=1.11
-    - IMAGE_NAME=brfutebol/hostdetect
-    - GO111MODULE=on
-
+  - GOARCH=amd64
+  - GO_FOR_RELEASE=1.11
+  - IMAGE_NAME=brfutebol/hostdetect
+  - GO111MODULE=on
+  - secure: R4b9BNLwv7a55HdN3aVXWoLXNsCdd18SCHgmAzUVCNhH2KEn/PWqx6kdC4V2DMakMj41uVosSxLpTHOl2210Ov3kCYNzdwCruUGnmZqfIbpfM2tKqyqyQ31vxoLewxUQO4BraBxrDUtpOu1su6aTkA7nEgmBD3s6xCAWzdlHC4O2TdUzI8aS7l/bcA6N5Wns1gyCPuguKztDHkBRf4q1fhbErS9Do8Bd5LrxJEzOZMJbShDokbWrfWBJzfFM6M8mCc100hMyxX92g1my4+m3mP/uYL4yFXpePrPJafRQmBVkXxVD/oJJn9dEcLqWnYxQJq4V47A3IDL3iqxOXp2Sd7MUCsDP6zY41CMtaIVX0JiJgfMRaqUxDe7TaCLvHRAPdCgD567/8dr2VrOstV2Ujr25cwuLTFTm4Dyoqh8KQYHJt0j+bEXckaiqstRsi1mWvhFwZss1I45dJkveMnl76mFRHQgG9pb4e7+iUmS39gg/ktiFw0uDofzkL9b+HWTXfG/GcMokaRVxQ/02VKRai3Ly5Bta9w3PbhShawkORNYpXaDeMMexaJQvu8hiTOzwT1KzLgP11Ui30loM1nTzJpw4b+lIAbCQf0ukNDRI3pPlnXVxow9qB75/dWnrW6d7/BaK3oJor2QgzLkS3AA3u1ooZrQTbvyAWxxXVT4hGto=
 install: true
-
 jobs:
   fast_finish: true
-
 notifications:
   email:
     on_success: change
     on_failure: always
+after_success:
+- "./deploy.sh"
