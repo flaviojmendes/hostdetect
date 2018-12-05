@@ -36,6 +36,10 @@ Hostdetect uses Go modules, therefore it depends on Go 1.11 and newer.
 Also, it means it doesn't necessarily have to be contained inside your `$GOPATH/src` folder.
 Once you've cloned the repo locally, you may run `go mod verify` to make sure all dependencies are present.
 
+#### Tests
+
+`$ go test ./...`
+
 
 ## Kubernetes integration
 
@@ -52,4 +56,12 @@ TODO
 7. Respond to any code review feedback.
 
 If you want to contribute and have fun with us, we'll be glad to have you onboard. 
+
+## Code Status
+
+[![Build Status](https://travis-ci.org/brfutebol/hostdetect.svg?branch=master)](https://travis-ci.org/brfutebol/hostdetect)
+
+## License
+
+hostdetect is released under the [MIT License](https://opensource.org/licenses/MIT).
 
