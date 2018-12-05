@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func testIntervalForEvery5Minutes(t *testing.T) {
+func TestIntervalForEvery5Minutes(t *testing.T) {
 	var objConfig = &Config{
 		Interval: 5 * time.Minute,
 		Timeout:  time.Second,
@@ -24,7 +24,7 @@ func testIntervalForEvery5Minutes(t *testing.T) {
 	}
 }
 
-func testIntervalForEvery10Seconds(t *testing.T) {
+func TestIntervalForEvery10Seconds(t *testing.T) {
 	var objConfig = &Config{
 		Interval: 5 * time.Second,
 		Timeout:  time.Second,

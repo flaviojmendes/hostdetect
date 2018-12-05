@@ -1,9 +1,10 @@
 package main
 
 import (
-	"encoding/json"
+	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/mux"
 )
@@ -19,5 +20,13 @@ func Server() {
 }
 
 func MetricsHandler(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(checks)
+	var metrics []string
+
+	for _, check := range checks {
+		metrics = append(metrics, check.getMetric())
+	}
+
+	metrics = append(metrics, getMetrics())
+
+	io.WriteString(w, strings.Join(metrics, "\n"))
 }

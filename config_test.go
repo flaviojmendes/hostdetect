@@ -50,7 +50,7 @@ func TestConfigCanBeDeserialized(t *testing.T) {
 	}
 }
 
-func testIfItReadConfig(t *testing.T) {
+func TestIfItReadConfig(t *testing.T) {
 	content, err := ioutil.ReadFile("mock_file")
 
 	if err != nil {
@@ -65,12 +65,66 @@ func testIfItReadConfig(t *testing.T) {
 	}
 }
 
-func testIfFileIsReadableOnceItExists(t *testing.T) {
+func TestIfFileIsReadableOnceItExists(t *testing.T) {
 	var filepath = "mock_file"
 
 	result, err := readConfigFile(filepath)
 
 	if result == nil && err != nil {
 		t.Fatalf("error serializing config: %s", filepath)
+	}
+}
+
+func TestCheckMetricContentForOpenPort(t *testing.T) {
+	var host = Host{Network: "tcp", Address: "zebeleu.com.br:80"}
+	var check = Check{host: host, state: open}
+
+	var response = check.getMetric()
+
+	var expected = "host_with_failure{host=\"zebeleu.com.br:80\", network=\"tcp\", state=\"0\"} 1"
+
+	if response != expected {
+		t.Fatalf("got: %v expected: %v", response, expected)
+	}
+}
+
+func TestCheckMetricContentForClosedPort(t *testing.T) {
+	var host = Host{Network: "tcp", Address: "zebeleu.com.br:80"}
+	var check = Check{host: host, state: closed}
+
+	var response = check.getMetric()
+
+	var expected = "host_with_success{host=\"zebeleu.com.br:80\", network=\"tcp\", state=\"1\"} 1"
+
+	if response != expected {
+		t.Fatalf("got: %v expected: %v", response, expected)
+	}
+}
+
+func TestCheckMetricContentForFailedPort(t *testing.T) {
+	var host = Host{Network: "tcp", Address: "zebeleu.com.br:80"}
+	var check = Check{host: host, state: failure}
+
+	var response = check.getMetric()
+
+	var expected = "host_with_failure{host=\"zebeleu.com.br:80\", network=\"tcp\", state=\"2\"} 1"
+
+	if response != expected {
+		t.Fatalf("got: %v expected: %v", response, expected)
+	}
+}
+
+func TestCheckMetrics(t *testing.T) {
+	var host = Host{Network: "tcp", Address: "zebeleu.com.br:80"}
+	var check = Check{host: host, state: failure}
+
+	checks = append(checks, check)
+
+	var response = getMetrics()
+
+	var expected = "hosts_with_failures 1"
+
+	if response != expected {
+		t.Fatalf("got: %v expected: %v", response, expected)
 	}
 }

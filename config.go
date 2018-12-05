@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -58,4 +59,23 @@ func getConfigEnv() (*Config, error) {
 	data, err := readConfigFile(configFile)
 
 	return readConfig(data), err
+}
+
+func (c Check) getMetric() string {
+	var metric = "host_with_failure"
+	if c.state == closed {
+		metric = "host_with_success"
+	}
+	return fmt.Sprintf("%s{host=\"%s\", network=\"%s\", state=\"%v\"} 1", metric, c.host.Address, c.host.Network, c.state)
+}
+
+func getMetrics() string {
+	var failed = 0
+	for _, check := range checks {
+		if check.state != closed {
+			failed = failed + 1
+		}
+	}
+
+	return fmt.Sprintf("%s %v", "hosts_with_failures", failed)
 }
